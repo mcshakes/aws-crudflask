@@ -66,12 +66,32 @@ understand Region versus AZ versus Global Service
 
 - Three kinds of AWS Users: IAM Users (you and me), Federated/System Users, 
 
-HOMEWORK automation:
+## Bonuses
+
+In a way, these are just as important as the manual steps above; using automation tools to create AWS resources easily and in a repeatable sense.
+
 - Read about Service Control Policies (SCP) Some policies:
 https://github.com/hashishrajan/aws-scp-best-practice-policies/tree/main/AWS%20SCP%20Policies
 - Create a policy and attach to user: Attach a service policy to the users within an account
 
-- create a group like read-only and attach policies for read only to it for s3 buckets. Pretend it's support techs/engineers.
-- create Engineer group; should access EC2 iwthin that group. Only there.
-- create a role
+### Terraform
 
+The following steps will create the read-only group for support engineers with S3 access and the Engineer group with EC2 access.
+
+```
+terraform init
+terraform plan
+terraform apply
+```
+Once created, it's easy to find these new resources within the AWS console, but it's even easier to just use the CLI.
+
+
+`aws iam list-groups` will list the groups.
+
+`aws iam list-attached-group-policies --group-name ${groupName}` shows policies attached to a specific group.
+
+`aws iam list-policies --scope Local` shows the (custom) IAM policies.
+
+`aws iam get-policy --policy-arn ${policyArn}` gets policy details.
+
+Finally, do `terraform destroy` to remove everything we've built.
